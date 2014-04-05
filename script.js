@@ -1,6 +1,9 @@
 function main() {
-	alert("hellooooooooooooooooo again!");
+	
 }
+
+
+
 
 // if (document.title.indexOf("Google") != -1) {
     // Creating Elements
@@ -16,9 +19,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	document.querySelector('button').addEventListener('click', main);
 	
-	var my_div = document.createElement('div');
-	my_div.innerHTML('HELLO WORLD');
-	
-	document.body.appendChild(my_div, document.body.firstChild);
-	
+	chrome.tabs.query({}, function (tabs) {
+	for (var i = 0; i < tabs.length; i++) {
+		if (tabs[i] != null) {
+			var this_div = document.createElement('div');
+			var to_add = document.createTextNode(tabs[i].title);
+			this_div.appendChild(to_add);	
+			document.body.appendChild(this_div);
+		}
+	}
+	});
+
+
 });
