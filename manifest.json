@@ -1,0 +1,14 @@
+{
+	"manifest_version": 1,
+
+  "name": "TabZ",
+  "description": "This extension is to make tabs cooler on google chrome, so  Doge",
+  "version": "1.0",
+
+  "browser_action": {
+    
+  },
+  "permissions": [
+   
+  ]
+}
