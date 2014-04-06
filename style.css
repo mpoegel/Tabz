@@ -1,3 +1,23 @@
 body {
 	width: 400px;
+	background-color: #F5FAF5;
+}
+
+p{
+	font-family: Palatino Linotype;
+	font-size: 26px;
+}
+
+div{
+	font-family: Verdana;
+	font-size: 12px;
+	cursor: pointer;
+	font-weight: bold;
+	border-style:outset;
+	border-width:medium;
+	border-color: #B2B2B2;
+	padding-bottom: 5px;
+	padding-top: 5px;
+	border-spacing:10px 20px;
+	text-align:center;
 }
