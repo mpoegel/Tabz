@@ -28,6 +28,16 @@ function deleteMulti() {
 	
 }
 
+function removeTab() {
+	var tab_num = this.id.substring(4);
+
+	chrome.tabs.query( {}, function(tabs) {
+		chrome.tabs.remove(tabs[tab_num].id);
+	});
+	
+	updateTabList();
+}
+
 // returns the div class that the url should be placed in
 function classify(tab) {
 
@@ -67,13 +77,14 @@ function classify(tab) {
 		
 }
 
+function updateTabList() {
 
-document.addEventListener('DOMContentLoaded', function() {
-	
-	document.getElementById('deleteButton').addEventListener('click', deleteMulti);
-	
-	console.log('hello world');
-	
+	var TABS_NODE = document.getElementById('tab_list');
+	// clear the current list 
+	while (TABS_NODE.hasChildNodes()) {
+		TABS_NODE.removeChild(TABS_NODE.lastChild);
+	}
+
 	chrome.tabs.query({}, function (tabs) {
 		for (var i = 0; i < tabs.length; i++) {
 			if (tabs[i] != null) {
@@ -94,17 +105,17 @@ document.addEventListener('DOMContentLoaded', function() {
 					// create a header node for the div
 					var section_header = document.createTextNode(section_name);
 					var header_div = document.createElement('div');
+					header_div.className = 'group_header';
 					header_div.id = section_name + '_header';
-					document.body.appendChild(header_div);
+					header_div.appendChild(section_header);
+					TABS_NODE.appendChild(header_div);
 					
 					// create the section node under the header that will get toggled
 					section_div = document.createElement('div');
 					section_div.id = section_name;
 					section_div.className = 'tab_group';
-					
-					section_div.appendChild(section_header);
-					
-					document.body.appendChild(section_div);
+										
+					TABS_NODE.appendChild(section_div);
 					
 				}
 				// if it does then retrieve it
@@ -112,9 +123,38 @@ document.addEventListener('DOMContentLoaded', function() {
 				
 				// add the tab to the appropriate section
 				section_div.appendChild(tab_div);
+				
+				// add an X button
+				var del_div = document.createElement('div');
+				del_div.className = 'tab_x';
+				del_div.removeEventListener('click', tabSelect);
+				del_div.addEventListener('click', removeTab);
+				del_div.appendChild(document.createTextNode('X'));
+				tab_div.appendChild(del_div);
+				
+				
 			}
 		}
 	});
 
+}
+
+
+document.addEventListener('DOMContentLoaded', function() {
+	
+	document.getElementById('deleteButton').addEventListener('click', deleteMulti);
+	
+	// container to hold all the tabs
+	var tab_list_div = document.createElement('div');
+	tab_list_div.id = 'tab_list';
+	document.body.appendChild(tab_list_div);
+	
+	// update that display bro
+	updateTabList();
 
 });
+
+
+
+
+

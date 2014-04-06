@@ -14,9 +14,17 @@ p{
 	left: 80%;
 
 }
+
 .spanDelete{
 	text-align: right;
 }
+
+.group_header {
+	color: red;
+	font-weight: bold;
+	font-size: 16px;
+}
+
 .tab_class {
 	font-family: Verdana;
 	font-size: 12px;
@@ -36,3 +44,25 @@ p{
 .tab_class:hover {
 	background-color: #FFFE94;
 }
+
+.tab_x {
+	float: right;
+	margin: 2px;
+	border: 1px black solid;
+}
+.tab_x:hover {
+	background-color: #D0D0C5
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
