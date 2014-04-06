@@ -39,10 +39,22 @@ function classify(tab) {
 	else if (value.search("://") >= 0) {
 		value = value.substring(value.search("://") + 3 );
 	}
+	if(value.search(".com") >= 0){
+		value = value.substring(0,value.search(".com"));
+	}
+	else if(value.search(".org") >= 0){
+		value = value.substring(0,value.search(".org"));
+	}
+	else if(value.search(".edu") >= 0){
+		value = value.substring(0,value.search(".edu"));
+	}
+	else if(value.search(".net") >= 0){
+		value = value.substring(0,value.search(".net"));
+	}
 	
-	for (var i = 0; i < value.length; i++) {
-		if(value[i] == ".") {
-			return value.substring(0, i);
+	for(var i = value.length - 1; i >= 0; i--){
+		if(value[i] == "."){
+			return value.substring(i+1);
 		}
 	}
 	
