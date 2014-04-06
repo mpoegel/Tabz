@@ -6,13 +6,15 @@ body {
 p{
 	font-family: Palatino Linotype;
 	font-size: 26px;
+	cursor: default;
 }
 
 #deleteButton{
-	font-size: 8px;
+	font-size: 10px;
 	position: absolute;
 	left: 80%;
-
+	cursor: pointer;
+	font-family: Arial;
 }
 
 .spanDelete{
@@ -23,6 +25,7 @@ p{
 	color: red;
 	font-weight: bold;
 	font-size: 16px;
+	cursor: default;
 }
 
 .tab_class {
@@ -37,7 +40,6 @@ p{
 	padding-top: 5px;
 	border-spacing:10px 20px;
 	text-align:center;
-	
 	margin-top: 2px;
 }
 
@@ -53,16 +55,3 @@ p{
 .tab_x:hover {
 	background-color: #D0D0C5
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
