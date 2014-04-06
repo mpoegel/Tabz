@@ -1,25 +1,17 @@
-function main() {
+
+function tabSelect() {
+	var tab_num = this.id.substring(4);
+
+	chrome.tabs.query( {}, function(the_tabs) {
+		chrome.tabs.update( the_tabs[tab_num].id, {active:true} );
+	});
 	
 }
 
-function tabSelect() {
-	alert(this.id);
-}
 
 
-// if (document.title.indexOf("Google") != -1) {
-    // Creating Elements
-    // var btn = document.createElement("BUTTON")
-    // var t = document.createTextNode("CLICK ME");
-    // btn.appendChild(t);
-    // Appending to DOM 
-    // document.body.appendChild(btn);
-		// document.write("hello world");
-// }
 
 document.addEventListener('DOMContentLoaded', function() {
-
-	document.querySelector('button').addEventListener('click', main);
 	
 	chrome.tabs.query({}, function (tabs) {
 	for (var i = 0; i < tabs.length; i++) {
