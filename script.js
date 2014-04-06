@@ -94,6 +94,8 @@ function updateTabList() {
 	chrome.tabs.query({}, function (tabs) {
 		for (var i = 0; i < tabs.length; i++) {
 			if (tabs[i] != null) {
+				var container_div = document.createElement('div');
+				
 				var tab_div = document.createElement('div');
 				tab_div.id = 'tab_' + i;
 				tab_div.className = 'tab_class';
@@ -128,7 +130,7 @@ function updateTabList() {
 				else { section_div = document.getElementById(section_name);  }
 				
 				// add the tab to the appropriate section
-				section_div.appendChild(tab_div);
+				container_div.appendChild(tab_div);
 				
 				// add an X button
 				var del_div = document.createElement('div');
@@ -136,8 +138,9 @@ function updateTabList() {
 				del_div.id = 'tab_x_' + i;
 				del_div.addEventListener('click', removeTab);
 				del_div.appendChild(document.createTextNode('X'));
-				section_div.appendChild(del_div);
+				container_div.appendChild(del_div);
 				
+				section_div.appendChild(container_div);
 				
 			}
 		}

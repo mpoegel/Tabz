@@ -41,6 +41,9 @@ p{
 	border-spacing:10px 20px;
 	text-align:center;
 	margin-top: 2px;
+	
+	width: 370px;
+	float: left;
 }
 
 .tab_class:hover {
@@ -50,6 +53,10 @@ p{
 .tab_x {
 	margin: 2px;
 	border: 1px black solid;
+	width: 15px;
+	float: right;
+	padding: 2px 0;
+	text-align: center;
 }
 .tab_x:hover {
 	background-color: #D0D0C5
