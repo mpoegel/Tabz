@@ -8,6 +8,15 @@ p{
 	font-size: 26px;
 }
 
+.deleteButton{
+	font-size: 8px;
+	position: absolute;
+	left: 80%;
+
+}
+.spanDelete{
+	text-align: right;
+}
 .tab_class {
 	font-family: Verdana;
 	font-size: 12px;
