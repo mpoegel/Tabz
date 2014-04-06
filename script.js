@@ -87,9 +87,14 @@ function classify(tab) {
 function toggle() {
 	var k = this.id.search('_header');
 	var section = this.id.substring(0,k);
-	// alert(section);
-
-	document.getElementById('tab_4').classList.toggle('hide_group');
+	// toggle the visibility
+	document.getElementById(section).classList.toggle('hide_group');
+	// update the memory state
+	chrome.storage.sync.get(section, function(result) {
+		
+		// foo
+		
+	});
 }
 
 
@@ -133,6 +138,13 @@ function updateTabList() {
 					section_div = document.createElement('div');
 					section_div.id = section_name;
 					section_div.className = 'tab_group';
+					
+					// check the state of the section
+					chrome.storage.sync.get(section_name, function(result) {
+					
+						// foo
+						
+					});
 					
 					TABS_NODE.appendChild(section_div);
 					
