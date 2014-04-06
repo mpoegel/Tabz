@@ -68,6 +68,9 @@ function classify(tab) {
 	else if(value.search(".net") >= 0){
 		value = value.substring(0,value.search(".net"));
 	}
+	else if(value.search(".tv") >= 0){
+		value = value.substring(0,value.search(".tv"));
+	}
 	
 	for(var i = value.length - 1; i >= 0; i--){
 		if(value[i] == "."){
@@ -78,6 +81,7 @@ function classify(tab) {
 		value = value.substring(0, value.length-1);
 	}
 	value = value.charAt(0).toUpperCase() + value.slice(1);
+	value = value.trim()
 	console.log(value);
 	return value;
 		

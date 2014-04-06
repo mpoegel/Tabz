@@ -3,7 +3,7 @@
 	"manifest_version": 2,
 	"version": "1.0",
   "name": "TabZ",
-  "description": "This extension is to make tabs cooler on google chrome, so  Doge",
+  "description": "This extension is for people who have too many tabs open and need something to help them manage their browser.",
   "version": "1.0",
 	"browser_action": {
 		"default_icon": "icon16.png",
