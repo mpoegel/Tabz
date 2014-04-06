@@ -14,11 +14,13 @@ function deleteMulti() {
 	chrome.tabs.query( {}, function(tabs) {
 	
 		for (var i = 0; i < tabs.length; i++) {
+		var ids = [];
 			for (var j = 0; j < tabs.length; j++) {
 				if (i == j) { continue; }
 				if (tabs[i].url == tabs[j].url) {
 					chrome.tabs.remove(tabs[j].id);
-					j--;
+					deleteMulti();
+					return;
 				}
 			}
 		}
@@ -57,7 +59,9 @@ function classify(tab) {
 			return value.substring(i+1);
 		}
 	}
-	
+	if(value[value.length-1] == "/"){
+		value = value.substring(0, value.length-1);
+	}
 	console.log(value);
 	return value;
 		
