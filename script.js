@@ -29,13 +29,18 @@ function deleteMulti() {
 }
 
 function removeTab() {
-	var tab_num = this.id.substring(4);
+	var tab_num = this.id.substring(6);
 
 	chrome.tabs.query( {}, function(tabs) {
 		chrome.tabs.remove(tabs[tab_num].id);
 	});
 	
+	TABS_NODE = document.getElementById('tab_list');
+	TABS_NODE.removeChild(document.getElementById('tab_x_'+tab_num));
+	TABS_NODE.removeChild(document.getElementById('tab_'+tab_num));
+	
 	updateTabList();
+	
 }
 
 // returns the div class that the url should be placed in
@@ -127,10 +132,10 @@ function updateTabList() {
 				// add an X button
 				var del_div = document.createElement('div');
 				del_div.className = 'tab_x';
-				del_div.removeEventListener('click', tabSelect);
+				del_div.id = 'tab_x_' + i;
 				del_div.addEventListener('click', removeTab);
 				del_div.appendChild(document.createTextNode('X'));
-				tab_div.appendChild(del_div);
+				section_div.appendChild(del_div);
 				
 				
 			}
