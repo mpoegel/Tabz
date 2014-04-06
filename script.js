@@ -71,12 +71,13 @@ function classify(tab) {
 	
 	for(var i = value.length - 1; i >= 0; i--){
 		if(value[i] == "."){
-			return value.substring(i+1);
+			value = value.substring(i+1);
 		}
 	}
 	if(value[value.length-1] == "/"){
 		value = value.substring(0, value.length-1);
 	}
+	value = value.charAt(0).toUpperCase() + value.slice(1);
 	console.log(value);
 	return value;
 		
