@@ -10,11 +10,11 @@ p{
 }
 
 #deleteButton{
-	font-size: 10px;
-	position: absolute;
-	left: 80%;
+	font-size: 15px;
+	float: right;
 	cursor: pointer;
 	font-family: Arial;
+	font-weight: bold;
 }
 
 .spanDelete{
@@ -22,15 +22,21 @@ p{
 }
 
 .group_header {
-	color: red;
 	font-weight: bold;
 	font-size: 16px;
 	cursor: default;
+	border: 1px black solid;
+	width:200px;
+	padding-left: 5px;
+	border-radius: 30px;
+	border-bottom: none;
+	float: left;
+	margin-top: 2px;
+	cursor: pointer;
+	background: linear-gradient(#a7faac,#f5faf5);
 }
 
 .hide_group {
-	background-color: black;
-	color: blue;
 	display: none;
 }
 
@@ -47,7 +53,6 @@ p{
 	border-spacing:10px 20px;
 	text-align:center;
 	margin-top: 2px;
-	
 	width: 370px;
 	float: left;
 }
@@ -59,9 +64,10 @@ p{
 .tab_x {
 	margin: 2px;
 	border: 1px black solid;
+	border-radius: 40%;
+	font-weight: bold;
 	width: 15px;
 	float: right;
-	padding: 2px 0;
 	text-align: center;
 	cursor: pointer;	
 }

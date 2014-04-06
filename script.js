@@ -71,6 +71,9 @@ function classify(tab) {
 	else if(value.search(".tv") >= 0){
 		value = value.substring(0,value.search(".tv"));
 	}
+	else if(value.search(".io") >= 0){
+		value = value.substring(0,value.search(".io"));
+	}
 	
 	for(var i = value.length - 1; i >= 0; i--){
 		if(value[i] == "."){
@@ -164,7 +167,7 @@ function updateTabList() {
 				del_div.className = 'tab_x';
 				del_div.id = 'tab_x_' + i;
 				del_div.addEventListener('click', removeTab);
-				del_div.appendChild(document.createTextNode('X'));
+				del_div.appendChild(document.createTextNode('x'));
 				container_div.appendChild(del_div);
 				
 				section_div.appendChild(container_div);
