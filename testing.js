@@ -52,3 +52,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 });
+
+
+function TabTag(tab)
+{
+	var value = tab.url;
+	if (value == "")
+	{return "New Tab";}
+	if(value.search("www.") >= 0)
+	{
+		value = value.substring(value.search("www.") + 4);
+	}
+	else if(value.search("://") >= 0)
+	{
+		value = value.substring(value.search("://") + 3 );
+	}
+	for(var i = 0; i < value.length; i++)
+	{
+		if(value[i] == "."){
+			return value.substring(0, i);
+		}
+	}
+	return value;
+
+}
+
