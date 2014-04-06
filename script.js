@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		if (tabs[i] != null) {
 			var this_div = document.createElement('div');
 			this_div.id = 'tab_' + i;
-			this_div.class = 'tab_class';
+			this_div.className = 'tab_class';
 			this_div.addEventListener('click', tabSelect);
 			var to_add = document.createTextNode(tabs[i].title);
 			this_div.appendChild(to_add);
@@ -26,6 +26,8 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	}
 	});
+	
+	
 
 
 });

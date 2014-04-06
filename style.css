@@ -8,7 +8,7 @@ p{
 	font-size: 26px;
 }
 
-div{
+.tab_class {
 	font-family: Verdana;
 	font-size: 12px;
 	cursor: pointer;
@@ -20,4 +20,6 @@ div{
 	padding-top: 5px;
 	border-spacing:10px 20px;
 	text-align:center;
+	
+	margin-top: 2px;
 }
