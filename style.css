@@ -3,12 +3,6 @@ body {
 	background-color: #F5FAF5;
 }
 
-p{
-	font-family: Palatino Linotype;
-	font-size: 26px;
-	cursor: default;
-}
-
 #deleteButton{
 	font-size: 15px;
 	float: right;
