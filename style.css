@@ -28,6 +28,12 @@ p{
 	cursor: default;
 }
 
+.hide_group {
+	background-color: black;
+	color: blue;
+	display: none;
+}
+
 .tab_class {
 	font-family: Verdana;
 	font-size: 12px;
@@ -57,6 +63,7 @@ p{
 	float: right;
 	padding: 2px 0;
 	text-align: center;
+	cursor: pointer;	
 }
 .tab_x:hover {
 	background-color: #D0D0C5

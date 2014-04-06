@@ -83,6 +83,16 @@ function classify(tab) {
 		
 }
 
+
+function toggle() {
+	var k = this.id.search('_header');
+	var section = this.id.substring(0,k);
+	// alert(section);
+
+	document.getElementById('tab_4').classList.toggle('hide_group');
+}
+
+
 function updateTabList() {
 
 	var TABS_NODE = document.getElementById('tab_list');
@@ -116,13 +126,14 @@ function updateTabList() {
 					header_div.className = 'group_header';
 					header_div.id = section_name + '_header';
 					header_div.appendChild(section_header);
+					header_div.addEventListener('click', toggle);
 					TABS_NODE.appendChild(header_div);
 					
 					// create the section node under the header that will get toggled
 					section_div = document.createElement('div');
 					section_div.id = section_name;
 					section_div.className = 'tab_group';
-										
+					
 					TABS_NODE.appendChild(section_div);
 					
 				}
