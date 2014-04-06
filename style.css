@@ -23,3 +23,7 @@ p{
 	
 	margin-top: 2px;
 }
+
+.tab_class:hover {
+	background-color: #FFFE94;
+}
