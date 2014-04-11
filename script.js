@@ -30,16 +30,14 @@ function deleteMulti() {
 
 function removeTab() {
 	var tab_num = this.id.substring(6);
-
-	chrome.tabs.query( {}, function(tabs) {
-		chrome.tabs.remove(tabs[tab_num].id);
-	});
 	
-	TABS_NODE = document.getElementById('tab_list');
-	TABS_NODE.removeChild(document.getElementById('tab_x_'+tab_num));
-	TABS_NODE.removeChild(document.getElementById('tab_'+tab_num));
-	
+	// close the tab
+	chrome.tabs.remove(open_tabs[tab_num].id);
+	// update the list
+	open_tabs.splice(tab_num, 1);
+	// update the display
 	updateTabList();
+	
 	
 }
 
@@ -111,22 +109,23 @@ function updateTabList() {
 	// clear the current list 
 	while (TABS_NODE.hasChildNodes()) {
 		TABS_NODE.removeChild(TABS_NODE.lastChild);
+		console.log('removing');
 	}
 
 	chrome.tabs.query({}, function (tabs) {
-		for (var i = 0; i < tabs.length; i++) {
-			if (tabs[i] != null) {
+		for (var i = 0; i < open_tabs.length; i++) {
+			if (open_tabs[i] != null) {
 				var container_div = document.createElement('div');
 				
 				var tab_div = document.createElement('div');
 				tab_div.id = 'tab_' + i;
 				tab_div.className = 'tab_class';
 				tab_div.addEventListener('click', tabSelect);
-				var to_add = document.createTextNode(tabs[i].title);
+				var to_add = document.createTextNode(open_tabs[i].title);
 				tab_div.appendChild(to_add);
 				
 				// classify the current tab by url
-				var section_name = classify(tabs[i]);
+				var section_name = classify(open_tabs[i]);
 				var section_div;
 				
 				// if that classifcation doesn't exist then create it
@@ -175,9 +174,11 @@ function updateTabList() {
 			}
 		}
 	});
+	
 
 }
 
+var open_tabs = new Array();
 
 document.addEventListener('DOMContentLoaded', function() {
 	
@@ -187,6 +188,14 @@ document.addEventListener('DOMContentLoaded', function() {
 	var tab_list_div = document.createElement('div');
 	tab_list_div.id = 'tab_list';
 	document.body.appendChild(tab_list_div);
+	
+	chrome.tabs.query( {}, function(tabs){
+		for (var i=0; i<tabs.length; i++) {
+			open_tabs.push(tabs[i]);
+		}
+	});
+	
+	console.log('hello world');
 	
 	// update that display bro
 	updateTabList();
