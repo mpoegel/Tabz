@@ -121,7 +121,11 @@ function updateTabList() {
 				tab_div.id = 'tab_' + i;
 				tab_div.className = 'tab_class';
 				tab_div.addEventListener('click', tabSelect);
-				var to_add = document.createTextNode(open_tabs[i].title);
+				var name = open_tabs[i].title;
+				if(name.length > 75){
+					name = name.substring(0,75);
+				}
+				var to_add = document.createTextNode(name);
 				tab_div.appendChild(to_add);
 				
 				// classify the current tab by url
