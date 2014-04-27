@@ -19,6 +19,13 @@ function deleteMulti() {
 				if (i == j) { continue; }
 				if (tabs[i].url == tabs[j].url) {
 					chrome.tabs.remove(tabs[j].id);
+					open_tabs = new Array();
+					chrome.tabs.query( {}, function(tabs){
+						for (var i=0; i<tabs.length; i++) {
+							open_tabs.push(tabs[i]);
+						}
+					});
+					updateTabList();
 					deleteMulti();
 					return;
 				}
@@ -104,7 +111,7 @@ function toggle() {
 
 
 function updateTabList() {
-
+	
 	var TABS_NODE = document.getElementById('tab_list');
 	// clear the current list 
 	while (TABS_NODE.hasChildNodes()) {
@@ -113,15 +120,15 @@ function updateTabList() {
 	}
 
 	chrome.tabs.query({}, function (tabs) {
-		for (var i = 0; i < open_tabs.length; i++) {
-			if (open_tabs[i] != null) {
+		for (var i = 0; i < tabs.length; i++) {
+			if (tabs[i] != null) {
 				var container_div = document.createElement('div');
 				
 				var tab_div = document.createElement('div');
 				tab_div.id = 'tab_' + i;
 				tab_div.className = 'tab_class';
 				tab_div.addEventListener('click', tabSelect);
-				var name = open_tabs[i].title;
+				var name = tabs[i].title;
 				if(name.length > 75){
 					name = name.substring(0,75);
 				}
@@ -129,7 +136,7 @@ function updateTabList() {
 				tab_div.appendChild(to_add);
 				
 				// classify the current tab by url
-				var section_name = classify(open_tabs[i]);
+				var section_name = classify(tabs[i]);
 				var section_div;
 				
 				// if that classifcation doesn't exist then create it
