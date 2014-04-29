@@ -1,6 +1,6 @@
 body {
 	width: 400px;
-	background-color: #F5FAF5;
+	background-color: #F4FEED;
 }
 
 #deleteButton{
@@ -27,7 +27,7 @@ body {
 	float: left;
 	margin-top: 2px;
 	cursor: pointer;
-	background: linear-gradient(#a7faac,#f5faf5);
+	background: linear-gradient(#59C40B,#a7faac);
 }
 
 .hide_group {
@@ -40,6 +40,7 @@ body {
 	cursor: pointer;
 	font-weight: bold;
 	border-style:outset;
+	background-color: #FCFFF9;
 	border-width:medium;
 	border-color: #B2B2B2;
 	padding-bottom: 5px;
@@ -64,6 +65,7 @@ body {
 	float: right;
 	text-align: center;
 	cursor: pointer;	
+	background-color:white;
 }
 .tab_x:hover {
 	background-color: #D0D0C5

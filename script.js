@@ -43,9 +43,13 @@ function removeTab() {
 	// update the list
 	open_tabs.splice(tab_num, 1);
 	// update the display
+	open_tabs = new Array();
+	chrome.tabs.query( {}, function(tabs){
+	for (var i=0; i<tabs.length; i++) {
+		open_tabs.push(tabs[i]);
+		}
+	});
 	updateTabList();
-	
-	
 }
 
 // returns the div class that the url should be placed in
@@ -90,7 +94,6 @@ function classify(tab) {
 	}
 	value = value.charAt(0).toUpperCase() + value.slice(1);
 	value = value.trim()
-	console.log(value);
 	return value;
 		
 }
@@ -116,7 +119,6 @@ function updateTabList() {
 	// clear the current list 
 	while (TABS_NODE.hasChildNodes()) {
 		TABS_NODE.removeChild(TABS_NODE.lastChild);
-		console.log('removing');
 	}
 
 	chrome.tabs.query({}, function (tabs) {
@@ -129,8 +131,8 @@ function updateTabList() {
 				tab_div.className = 'tab_class';
 				tab_div.addEventListener('click', tabSelect);
 				var name = tabs[i].title;
-				if(name.length > 75){
-					name = name.substring(0,75);
+				if(name.length > 50){
+					name = name.substring(0,50);
 				}
 				var to_add = document.createTextNode(name);
 				tab_div.appendChild(to_add);
@@ -206,7 +208,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	});
 	
-	console.log('hello world');
 	
 	// update that display bro
 	updateTabList();

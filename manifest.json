@@ -3,6 +3,13 @@
 	"manifest_version": 2,
 	"version": "1.0",
   "name": "TabZ",
+  "content_scripts": [
+    {
+      "matches": ["http://www.google.com/*"],
+      "css": ["style.css"],
+      "js": ["jquery-1.11.0.js", "script.js"]
+    }
+  ],
   "description": "This extension is for people who have too many tabs open and need something to help them manage their browser.",
   "version": "1.0",
 	"browser_action": {
