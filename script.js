@@ -104,14 +104,63 @@ function toggle() {
 	var section = this.id.substring(0,k);
 	// toggle the visibility
 	document.getElementById(section).classList.toggle('hide_group');
+	console.log("toggled "+section)
+	
 	// update the memory state
-	chrome.storage.sync.get(section, function(result) {
+	chrome.storage.local.get(section, function(result) {
 		
-		// foo
+		var status = result[section];
+		chrome.storage.local.remove(section);
+		var dataObj = {};
+		
+		if (status) {
+			dataObj[section] = false;
+			chrome.storage.local.set(dataObj);
+		}
+		else {
+			dataObj[section] = true;
+			chrome.storage.local.set(dataObj);
+		}
 		
 	});
+	
 }
 
+function checkStates() {
+	
+	var groups = new Array();
+	
+	chrome.tabs.query({}, function(tabs) {
+		for (var i=0; i<tabs.length; i++) {
+			var name = classify(tabs[i]);
+			if (groups.indexOf(name) == -1) {
+				groups.push(name);
+			}
+		}
+				
+	chrome.storage.local.get(groups, function(result) {
+		for (var k=0; k<groups.length; k++) {
+			var g = groups[k];
+			// create new if not found
+			console.log(result[g]);
+			if (result[g] == null) {
+				var dataObj = {};
+				dataObj[g] = true;
+				chrome.storage.local.set(dataObj);
+			}
+			// if its false then make the group hidden
+			else if (result[g] == false) {
+				document.getElementById(g).classList.toggle('hide_group');
+			}
+			// else true do nothing
+		}
+	});
+			
+		
+		
+	});
+	
+}
 
 function updateTabList() {
 	
@@ -157,14 +206,7 @@ function updateTabList() {
 					section_div = document.createElement('div');
 					section_div.id = section_name;
 					section_div.className = 'tab_group';
-					
-					// check the state of the section
-					chrome.storage.sync.get(section_name, function(result) {
-					
-						// foo
-						
-					});
-					
+										
 					TABS_NODE.appendChild(section_div);
 					
 				}
@@ -188,6 +230,8 @@ function updateTabList() {
 		}
 	});
 	
+	// does stuff
+	checkStates();
 
 }
 
@@ -208,9 +252,10 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	});
 	
-	
 	// update that display bro
 	updateTabList();
+	
+	
 
 });
 
