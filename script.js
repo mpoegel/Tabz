@@ -19,12 +19,6 @@ function deleteMulti() {
 				if (i == j) { continue; }
 				if (tabs[i].url == tabs[j].url) {
 					chrome.tabs.remove(tabs[j].id);
-					open_tabs = new Array();
-					chrome.tabs.query( {}, function(tabs){
-						for (var i=0; i<tabs.length; i++) {
-							open_tabs.push(tabs[i]);
-						}
-					});
 					updateTabList();
 					deleteMulti();
 					return;
@@ -35,6 +29,8 @@ function deleteMulti() {
 	
 }
 
+
+
 function removeTab() {
 	var tab_num = this.id.substring(6);
 	
@@ -43,12 +39,6 @@ function removeTab() {
 	// update the list
 	open_tabs.splice(tab_num, 1);
 	// update the display
-	open_tabs = new Array();
-	chrome.tabs.query( {}, function(tabs){
-	for (var i=0; i<tabs.length; i++) {
-		open_tabs.push(tabs[i]);
-		}
-	});
 	updateTabList();
 }
 
@@ -62,13 +52,14 @@ function classify(tab) {
 	if(value.search("www.") >= 0) {
 		value = value.substring(value.search("www.") + 4);
 	}
-	else if (value.search("sites.") >= 0) {
-		value = value.substring(value.search("sites.") + 6 );
-		console.log("here");
-	}
 	else if (value.search("://") >= 0) {
 		value = value.substring(value.search("://") + 3 );
 	}
+	else if (value.search("sites.") >= 0) {
+		value = value.substring(value.search("sites.") + 6 );
+	}
+	
+	
 	if(value.search(".com") >= 0){
 		value = value.substring(0,value.search(".com"));
 	}
@@ -78,11 +69,11 @@ function classify(tab) {
 	else if(value.search(".edu") >= 0){
 		value = value.substring(0,value.search(".edu"));
 	}
-	else if(value.search(".net") >= 0){
-		value = value.substring(0,value.search(".net"));
-	}
 	else if(value.search(".tv") >= 0){
 		value = value.substring(0,value.search(".tv"));
+	}
+	else if(value.search(".net") >= 0){
+		console.log(value.search(".net"));
 	}
 	else if(value.search(".io") >= 0){
 		value = value.substring(0,value.search(".io"));
@@ -99,6 +90,7 @@ function classify(tab) {
 	if(value[value.length-1] == "/"){
 		value = value.substring(0, value.length-1);
 	}
+	
 	value = value.charAt(0).toUpperCase() + value.slice(1);
 	value = value.trim()
 	return value;
@@ -171,6 +163,13 @@ function checkStates() {
 
 function updateTabList() {
 	
+	//looks for open tabs and puts tab elements in open tabs array
+	open_tabs = new Array();
+	chrome.tabs.query( {}, function(tabs){
+		for (var i=0; i<tabs.length; i++) {
+			open_tabs.push(tabs[i]);
+		}
+	});
 	var TABS_NODE = document.getElementById('tab_list');
 	// clear the current list 
 	while (TABS_NODE.hasChildNodes()) {
@@ -208,7 +207,8 @@ function updateTabList() {
 					header_div.appendChild(section_header);
 					header_div.addEventListener('click', toggle);
 					TABS_NODE.appendChild(header_div);
-					
+	
+			
 					// create the section node under the header that will get toggled
 					section_div = document.createElement('div');
 					section_div.id = section_name;
@@ -242,10 +242,15 @@ function updateTabList() {
 
 }
 
+
+/* -------------------------------------------------------------------- */
+/*  Main run code for popup */
+
 var open_tabs = new Array();
 
 document.addEventListener('DOMContentLoaded', function() {
 	
+	//event listener for delete duplicate button, will run on click
 	document.getElementById('deleteButton').addEventListener('click', deleteMulti);
 	
 	// container to hold all the tabs
@@ -253,16 +258,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	tab_list_div.id = 'tab_list';
 	document.body.appendChild(tab_list_div);
 	
-	chrome.tabs.query( {}, function(tabs){
-		for (var i=0; i<tabs.length; i++) {
-			open_tabs.push(tabs[i]);
-		}
-	});
-	
 	// update that display bro
 	updateTabList();
-	
-	
 
 });
 

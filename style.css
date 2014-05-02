@@ -9,7 +9,6 @@ body {
 	cursor: pointer;
 	font-family: Arial;
 	font-weight: bold;
-	alt:"click to delete duplicate tabs";
 }
 
 .spanDelete{
@@ -68,6 +67,18 @@ body {
 	cursor: pointer;	
 	background-color:white;
 }
+
+.header_x {
+	margin: 2px;
+	border: 1px black solid;
+	border-radius: 40%;
+	font-weight: bold;
+	float: right;
+	text-align: center;
+	cursor: pointer;	
+	background-color:white;
+}
+
 .tab_x:hover {
 	background-color: #D0D0C5
 }
