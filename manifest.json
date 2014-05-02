@@ -23,9 +23,7 @@
 	"options_page": "options.html",
 	"permissions": [
 		"tabs",
-		"history",
 		"tabCapture",
-		"topSites",
 		"storage"
 	],
 	"commands": {

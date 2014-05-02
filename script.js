@@ -62,6 +62,10 @@ function classify(tab) {
 	if(value.search("www.") >= 0) {
 		value = value.substring(value.search("www.") + 4);
 	}
+	else if (value.search("sites.") >= 0) {
+		value = value.substring(value.search("sites.") + 6 );
+		console.log("here");
+	}
 	else if (value.search("://") >= 0) {
 		value = value.substring(value.search("://") + 3 );
 	}
@@ -82,6 +86,9 @@ function classify(tab) {
 	}
 	else if(value.search(".io") >= 0){
 		value = value.substring(0,value.search(".io"));
+	}
+	else if(value.search(".co") >= 0){
+		value = value.substring(0,value.search(".co"));
 	}
 	
 	for(var i = value.length - 1; i >= 0; i--){

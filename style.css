@@ -9,6 +9,7 @@ body {
 	cursor: pointer;
 	font-family: Arial;
 	font-weight: bold;
+	alt:"click to delete duplicate tabs";
 }
 
 .spanDelete{
