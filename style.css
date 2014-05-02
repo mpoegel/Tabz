@@ -1,6 +1,8 @@
 body {
 	width: 400px;
-	background-color: #F4FEED;
+	background-color: #F6EFEF;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
 }
 
 #deleteButton{
