@@ -1,5 +1,6 @@
 
 function tabSelect() {
+	order(open_tabs);
 	var tab_num = this.id.substring(4);
 
 	chrome.tabs.query( {}, function(the_tabs) {
@@ -12,7 +13,7 @@ function tabSelect() {
 function deleteMulti() {
 	
 	chrome.tabs.query( {}, function(tabs) {
-	
+		order(tabs);
 		for (var i = 0; i < tabs.length; i++) {
 		var ids = [];
 			for (var j = 0; j < tabs.length; j++) {
@@ -32,6 +33,7 @@ function deleteMulti() {
 
 
 function removeTab() {
+	order(open_tabs);
 	var tab_num = this.id.substring(6);
 	
 	// close the tab
@@ -99,6 +101,7 @@ function classify(tab) {
 
 
 function toggle() {
+	order(open_tabs);
 	var k = this.id.search('_header');
 	var section = this.id.substring(0,k);
 	// toggle the visibility
@@ -161,6 +164,22 @@ function checkStates() {
 	
 }
 
+/* THIS FUNCTION MUST BE CALLED BEFORE TRYING TO CHANGE ANY TABS  OR ELSE BAD THINGS*/
+function order(tabs){
+	for(var i = 0; i < tabs.length; i++){
+		for(var j = 0; j < i; j++){
+			if(classify(tabs[i]) < classify(tabs[j])){
+				var tmp = tabs[i];
+				tabs[i] = tabs[j];
+				tabs[j] = tmp;
+			}
+		}
+	}
+	for(var i = 0; i < tabs.length; i++){
+		console.log(tabs[i].title);
+	}
+}
+
 function updateTabList() {
 	
 	//looks for open tabs and puts tab elements in open tabs array
@@ -177,6 +196,7 @@ function updateTabList() {
 	}
 
 	chrome.tabs.query({}, function (tabs) {
+	order(tabs);
 		for (var i = 0; i < tabs.length; i++) {
 			if (tabs[i] != null) {
 				var container_div = document.createElement('div');
@@ -262,8 +282,3 @@ document.addEventListener('DOMContentLoaded', function() {
 	updateTabList();
 
 });
-
-
-
-
-
