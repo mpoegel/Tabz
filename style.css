@@ -20,16 +20,14 @@ body {
 .group_header {
 	font-weight: bold;
 	font-size: 16px;
-	cursor: default;
-	border: 1px black solid;
-	width:200px;
-	padding-left: 5px;
-	border-radius: 30px;
-	border-bottom: none;
-	float: left;
+	padding-left: 15px;
+	padding-right: 10px;
+	display: flex;
+	width: 175px;
 	margin-top: 2px;
 	cursor: pointer;
-	background: linear-gradient(#59C40B,#a7faac);
+	background-image: url('tab_red.png');
+	background-repeat: no-repeat;
 }
 
 .hide_group {
@@ -45,6 +43,8 @@ body {
 	background-color: #FCFFF9;
 	border-width:medium;
 	border-color: #B2B2B2;
+	border-top-width: 0px;
+	border-bottom-width: 0px;
 	padding-bottom: 5px;
 	padding-top: 5px;
 	border-spacing:10px 20px;
