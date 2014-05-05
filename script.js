@@ -4,6 +4,7 @@ function tabSelect() {
 	var tab_num = this.id.substring(4);
 
 	chrome.tabs.query( {}, function(the_tabs) {
+		order(the_tabs);
 		chrome.tabs.update( the_tabs[tab_num].id, {active:true} );
 	});
 	
