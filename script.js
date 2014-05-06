@@ -1,3 +1,73 @@
+function updateTabList2() {
+	
+	var TABS_NODE = document.getElementById('tab_list');
+	// clear the current list 
+	while (TABS_NODE.hasChildNodes()) {
+		TABS_NODE.removeChild(TABS_NODE.lastChild);
+	}
+
+		for (var i = 0; i < open_tabs.length; i++) {
+			if (open_tabs[i] != null) {
+				var container_div = document.createElement('div');
+				
+				var tab_div = document.createElement('div');
+				tab_div.id = 'tab_' + i;
+				tab_div.className = 'tab_class';
+				tab_div.addEventListener('click', tabSelect);
+				var name = open_tabs[i].title;
+				if(name.length > 50){
+					name = name.substring(0,50);
+				}
+				var to_add = document.createTextNode(name);
+				tab_div.appendChild(to_add);
+				
+				// classify the current tab by url
+				var section_name = classify(open_tabs[i]);
+				var section_div;
+				
+				// if that classifcation doesn't exist then create it
+				if (document.getElementById(section_name) == null) {
+					
+					// create a header node for the div
+					var section_header = document.createTextNode(section_name);
+					var header_div = document.createElement('div');
+					header_div.className = 'group_header';
+					header_div.id = section_name + '_header';
+					header_div.appendChild(section_header);
+					header_div.addEventListener('click', toggle);
+					TABS_NODE.appendChild(header_div);
+	
+			
+					// create the section node under the header that will get toggled
+					section_div = document.createElement('div');
+					section_div.id = section_name;
+					section_div.className = 'tab_group';
+										
+					TABS_NODE.appendChild(section_div);
+					
+				}
+				// if it does then retrieve it
+				else { section_div = document.getElementById(section_name);  }
+				
+				// add the tab to the appropriate section
+				container_div.appendChild(tab_div);
+				
+				// add an X button
+				var del_div = document.createElement('div');
+				del_div.className = 'tab_x';
+				del_div.id = 'tab_x_' + i;
+				del_div.addEventListener('click', removeTab);
+				del_div.appendChild(document.createTextNode('x'));
+				container_div.appendChild(del_div);
+				
+				section_div.appendChild(container_div);
+				
+			}
+		}
+	// does stuff
+	checkStates();
+
+}
 
 function tabSelect() {
 	order(open_tabs);
@@ -32,17 +102,16 @@ function deleteMulti() {
 }
 
 
-
 function removeTab() {
 	order(open_tabs);
 	var tab_num = this.id.substring(6);
-	
+	var checker = open_tabs[tab_num].id;
 	// close the tab
 	chrome.tabs.remove(open_tabs[tab_num].id);
 	// update the list
 	open_tabs.splice(tab_num, 1);
 	// update the display
-	updateTabList();
+	updateTabList2();
 }
 
 // returns the div class that the url should be placed in
@@ -76,7 +145,7 @@ function classify(tab) {
 		value = value.substring(0,value.search(".tv"));
 	}
 	else if(value.search(".net") >= 0){
-		console.log(value.search(".net"));
+		value = value.substring(0,value.search(".net"));
 	}
 	else if(value.search(".io") >= 0){
 		value = value.substring(0,value.search(".io"));
@@ -107,7 +176,6 @@ function toggle() {
 	var section = this.id.substring(0,k);
 	// toggle the visibility
 	document.getElementById(section).classList.toggle('hide_group');
-	console.log("toggled "+section)
 	
 	// update the memory state
 	chrome.storage.local.get(section, function(result) {
@@ -145,7 +213,6 @@ function checkStates() {
 		for (var k=0; k<groups.length; k++) {
 			var g = groups[k];
 			// create new if not found
-			console.log(result[g]);
 			if (result[g] == null) {
 				var dataObj = {};
 				dataObj[g] = true;
@@ -167,6 +234,7 @@ function checkStates() {
 
 /* THIS FUNCTION MUST BE CALLED BEFORE TRYING TO CHANGE ANY TABS  OR ELSE BAD THINGS*/
 function order(tabs){
+
 	for(var i = 0; i < tabs.length; i++){
 		for(var j = 0; j < i; j++){
 			if(classify(tabs[i]) < classify(tabs[j])){
@@ -175,9 +243,6 @@ function order(tabs){
 				tabs[j] = tmp;
 			}
 		}
-	}
-	for(var i = 0; i < tabs.length; i++){
-		console.log(tabs[i].title);
 	}
 }
 
