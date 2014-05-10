@@ -1,7 +1,7 @@
 {
   "name": "Tabz",
 	"manifest_version": 2,
-	"version": "1.0",
+	"version": "1.1",
   "name": "TabZ",
   "content_scripts": [
     {
@@ -11,7 +11,7 @@
     }
   ],
   "description": "This extension is for people who have too many tabs open and need something to help them manage their browser.",
-  "version": "1.0",
+  "version": "1.2",
 	"browser_action": {
 		"default_icon": "icon16.png",
 		"default_title": "Tabz",
