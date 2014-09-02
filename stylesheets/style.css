@@ -26,7 +26,7 @@ body {
 	width: 175px;
 	margin-top: 2px;
 	cursor: pointer;
-	background-image: url('tab_red.png');
+	background-image: url('/images/tab_red.png');
 	background-repeat: no-repeat;
 }
 

@@ -6,19 +6,19 @@
   "content_scripts": [
     {
       "matches": ["http://www.google.com/*"],
-      "css": ["style.css"],
-      "js": ["jquery-1.11.0.js", "script.js"]
+      "css": ["stylesheets/style.css"],
+      "js": ["javascript/jquery-1.11.0.js", "javascript/script.js"]
     }
   ],
   "description": "This extension is for people who have too many tabs open and need something to help them manage their browser.",
   "version": "1.2",
 	"browser_action": {
-		"default_icon": "icon16.png",
+		"default_icon": "images/icon16.png",
 		"default_title": "Tabz",
 		"default_popup": "popup.html"
 	},
-	"icons": { "16": "icon16.png",
-           "48": "icon48.png"
+	"icons": { "16": "images/icon16.png",
+           "48": "images/icon48.png"
 	},
 	"options_page": "options.html",
 	"permissions": [
