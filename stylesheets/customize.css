@@ -1,0 +1,19 @@
+.review {
+  font-style: italic;
+}
+
+.review-stars {
+  
+}
+
+.review-star {
+  width = 16px;
+}
+
+.review-text {
+  
+}
+
+.review-author {
+  font-size: 12px;
+}
