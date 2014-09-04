@@ -247,83 +247,93 @@ function order(tabs){
 }
 
 function updateTabList() {
+	/* looks for open tabs and puts tab elements in open tabs array */
 	
-	//looks for open tabs and puts tab elements in open tabs array
+	// reset the open_tabs array
 	open_tabs = new Array();
+	
+	// add all the open tabs to the list
+	// WARNING: ASYNCRONOUS CALL! 
 	chrome.tabs.query( {}, function(tabs){
 		for (var i=0; i<tabs.length; i++) {
 			open_tabs.push(tabs[i]);
 		}
 	});
+	
+	// largest div container for all the tabs
+	// DEPRECIATED
 	var TABS_NODE = document.getElementById('tab_list');
+	
 	// clear the current list 
-	while (TABS_NODE.hasChildNodes()) {
-		TABS_NODE.removeChild(TABS_NODE.lastChild);
-	}
+	$('#tab_list').empty();
 
+	// build the groups and sort the tabs
 	chrome.tabs.query({}, function (tabs) {
-	order(tabs);
+		
+		// alphabetize the tabs (WHY?)
+		order(tabs);
+		
+		// loop over all the tabs
 		for (var i = 0; i < tabs.length; i++) {
+			
+			// double check to make sure the tab is valid
 			if (tabs[i] != null) {
+				
+				// create a container div to contain the tab's div
 				var container_div = document.createElement('div');
 				
-				var tab_div = document.createElement('div');
-				tab_div.id = 'tab_' + i;
-				tab_div.className = 'tab_class';
-				tab_div.addEventListener('click', tabSelect);
+				// get the name for the tab
 				var name = tabs[i].title;
 				if(name.length > 50){
 					name = name.substring(0,50);
 				}
-				var to_add = document.createTextNode(name);
-				tab_div.appendChild(to_add);
+				// create a container for the tab itself
+				$('<div/>', {
+					id: 'tab_'+i,
+					'class': 'tab_class',
+					click: tabSelect,
+					text: name
+				}).appendTo(container_div);
 				
-				// classify the current tab by url
+				// classify the current tab by its URL
 				var section_name = classify(tabs[i]);
-				var section_div;
 				
-				// if that classifcation doesn't exist then create it
+				// if that section doesn't exist then create it
 				if (document.getElementById(section_name) == null) {
 					
-					// create a header node for the div
-					var section_header = document.createTextNode(section_name);
-					var header_div = document.createElement('div');
-					header_div.className = 'group_header';
-					header_div.id = section_name + '_header';
-					header_div.appendChild(section_header);
-					header_div.addEventListener('click', toggle);
-					TABS_NODE.appendChild(header_div);
-	
+					// create a header for the section
+					$('<div/>', {
+						id: section_name + '_header',
+						'class': 'group_header',
+						click: toggle,
+						text: section_name
+					}).appendTo('#tab_list');						
 			
 					// create the section node under the header that will get toggled
-					section_div = document.createElement('div');
-					section_div.id = section_name;
-					section_div.className = 'tab_group';
-										
-					TABS_NODE.appendChild(section_div);
+					$('<div/>', {
+						id: section_name,
+						'class': 'tab_group'
+					}).appendTo('#tab_list');
 					
-				}
-				// if it does then retrieve it
-				else { section_div = document.getElementById(section_name);  }
-				
-				// add the tab to the appropriate section
-				container_div.appendChild(tab_div);
+				} // end section creation
 				
 				// add an X button
-				var del_div = document.createElement('div');
-				del_div.className = 'tab_x';
-				del_div.id = 'tab_x_' + i;
-				del_div.addEventListener('click', removeTab);
-				del_div.appendChild(document.createTextNode('x'));
-				container_div.appendChild(del_div);
+				// this is gross--replace this
+				$('<div/>', {
+					id: 'tab_x_' + i,
+					'class': 'tab_x',
+					click: removeTab,
+					text: 'x'
+				}).appendTo(container_div);
 				
-				section_div.appendChild(container_div);
-				
+				// add the tab (and x) to the section
+				$('#'+section_name).append(container_div);				
 			}
 		}
 	});
 	
 	// does stuff
+	// ??
 	checkStates();
 
 }
@@ -332,17 +342,18 @@ function updateTabList() {
 /* -------------------------------------------------------------------- */
 /*  Main run code for popup */
 
+// global variable containing all the open tabs... eh
 var open_tabs = new Array();
 
-document.addEventListener('DOMContentLoaded', function() {
+$(document).ready(function() {
 	
-	//event listener for delete duplicate button, will run on click
-	document.getElementById('deleteButton').addEventListener('click', deleteMulti);
+	// add event listener to the delete button to call deleteMulti function
+	$('#deleteButton').click(deleteMulti);
 	
 	// container to hold all the tabs
-	var tab_list_div = document.createElement('div');
-	tab_list_div.id = 'tab_list';
-	document.body.appendChild(tab_list_div);
+	$('<div/>', {
+		id: 'tab_list'
+	}).appendTo('body');
 	
 	// update that display bro
 	updateTabList();
