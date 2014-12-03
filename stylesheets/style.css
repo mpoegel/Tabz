@@ -13,6 +13,13 @@ body {
 	font-weight: bold;
 }
 
+#TestButton{
+	font-size: 16px;
+	float: right;
+	cursor: pointer;
+	font-family: Arial;
+}
+
 .spanDelete{
 	text-align: right;
 }

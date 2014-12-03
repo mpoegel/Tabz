@@ -153,6 +153,12 @@ function classify(tab) {
 	else if(value.search(".co") >= 0){
 		value = value.substring(0,value.search(".co"));
 	}
+	else if(value.search(".html") >= 0){
+		value = value.substring(0,value.search(".html"));
+	}
+	if(value.search("/") >= 0){
+		value = value.substring(value.search("/") + 1);
+	}
 	
 	for(var i = value.length - 1; i >= 0; i--){
 		if(value[i] == "."){
@@ -338,17 +344,49 @@ function updateTabList() {
 
 }
 
+function StorageTest() {
+	var array = new Array;
+	var url = "key2";
+	chrome.tabs.query({},  function(tabs) {
+		var title = prompt("Please enter the title of this tab set");
+		while (!title && title != null){
+			title = prompt("Please enter the title, none was given");
+		}
+		if(title == null){
+				return;
+		}
+		for (var i=0; i<tabs.length; i++) {
+			array.push(tabs[i].url);
+		}
+		array.push(title);
+		chrome.storage.local.get(url, function(result) {
+			try{
+				console.log(result);
+				value = result[url];
+				value.push(array);
+				result[url] = value;
+				chrome.storage.local.set( result );
+			}
+			catch(err){
+				var obj = {};
+				obj[url] = [array];
+				chrome.storage.local.set( obj );
+			}
+		});
+	});
+
+}
 
 /* -------------------------------------------------------------------- */
 /*  Main run code for popup */
 
 // global variable containing all the open tabs... eh
 var open_tabs = new Array();
-
 $(document).ready(function() {
 	
 	// add event listener to the delete button to call deleteMulti function
 	$('#deleteButton').click(deleteMulti);
+	$('#TestButton').click(StorageTest);
 	
 	// container to hold all the tabs
 	$('<div/>', {
