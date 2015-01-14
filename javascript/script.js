@@ -131,7 +131,6 @@ function classify(tab) {
 		value = value.substring(value.search("sites.") + 6 );
 	}
 	
-	
 	if(value.search(".com") >= 0){
 		value = value.substring(0,value.search(".com"));
 	}
@@ -141,11 +140,11 @@ function classify(tab) {
 	else if(value.search(".edu") >= 0){
 		value = value.substring(0,value.search(".edu"));
 	}
-	else if(value.search(".tv") >= 0){
-		value = value.substring(0,value.search(".tv"));
-	}
 	else if(value.search(".net") >= 0){
 		value = value.substring(0,value.search(".net"));
+	}
+	else if(value.search(".tv") >= 0){
+		value = value.substring(0,value.search(".tv"));
 	}
 	else if(value.search(".io") >= 0){
 		value = value.substring(0,value.search(".io"));
@@ -250,6 +249,10 @@ function order(tabs){
 			}
 		}
 	}
+}
+
+function sayHello(){
+	console.log("Hello");
 }
 
 function updateTabList() {
@@ -387,6 +390,7 @@ $(document).ready(function() {
 	// add event listener to the delete button to call deleteMulti function
 	$('#deleteButton').click(deleteMulti);
 	$('#TestButton').click(StorageTest);
+	$('#randy').click(sayHello);
 	
 	// container to hold all the tabs
 	$('<div/>', {
