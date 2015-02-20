@@ -119,8 +119,6 @@ function classify(tab) {
 
 	var value = tab.url;
 	
-	if (value == "") { return "New Tab"; }
-	
 	if(value.search("www.") >= 0) {
 		value = value.substring(value.search("www.") + 4);
 	}
@@ -142,6 +140,12 @@ function classify(tab) {
 	}
 	else if(value.search(".net") >= 0){
 		value = value.substring(0,value.search(".net"));
+	}
+	else if(value.search(".gov") >= 0){
+		value = value.substring(0,value.search(".gov"));
+	}
+	else if(value.search(".fr") >= 0){
+		value = value.substring(0,value.search(".fr"));
 	}
 	else if(value.search(".tv") >= 0){
 		value = value.substring(0,value.search(".tv"));
@@ -167,6 +171,7 @@ function classify(tab) {
 	if(value[value.length-1] == "/"){
 		value = value.substring(0, value.length-1);
 	}
+	if (value == "") { return "New Tab"; }
 	
 	value = value.charAt(0).toUpperCase() + value.slice(1);
 	value = value.trim()
@@ -249,10 +254,6 @@ function order(tabs){
 			}
 		}
 	}
-}
-
-function sayHello(){
-	console.log("Hello");
 }
 
 function updateTabList() {
@@ -349,7 +350,7 @@ function updateTabList() {
 
 function StorageTest() {
 	var array = new Array;
-	var url = "key2";
+	var url = "key4";
 	chrome.tabs.query({},  function(tabs) {
 		var title = prompt("Please enter the title of this tab set");
 		while (!title && title != null){
@@ -380,17 +381,35 @@ function StorageTest() {
 
 }
 
+
+function addToDropdown() {
+	var instance = $('#activeStorage');
+	var url = "key4";
+		chrome.storage.local.get(url, function(result) {	
+			for(var i = 0; i < result[url].length; i++){
+				var button = '<li><button class="dropdown_button_group" id="' + result[url][i][result[url][i].length-1] + "___TABZUSE" + '"  >' +  result[url][i][result[url][i].length-1] + ' </button></li>'
+				instance.append(button);
+			}
+	});
+}
+function SayHello(){
+	console.log("Hello");
+}
 /* -------------------------------------------------------------------- */
 /*  Main run code for popup */
 
 // global variable containing all the open tabs... eh
 var open_tabs = new Array();
+
 $(document).ready(function() {
 	
 	// add event listener to the delete button to call deleteMulti function
 	$('#deleteButton').click(deleteMulti);
 	$('#TestButton').click(StorageTest);
-	$('#randy').click(sayHello);
+	addToDropdown();
+	$(document).on('click', '.dropdown_button_group', function() {
+		SayHello();
+	});
 	
 	// container to hold all the tabs
 	$('<div/>', {
@@ -399,5 +418,4 @@ $(document).ready(function() {
 	
 	// update that display bro
 	updateTabList();
-
 });

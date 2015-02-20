@@ -11,6 +11,11 @@ body {
 	cursor: pointer;
 	font-family: Arial;
 	font-weight: bold;
+	height: 32px;
+}
+
+#dropColor{
+	background-color: #D3D3D3;
 }
 
 #TestButton{
@@ -18,6 +23,16 @@ body {
 	float: right;
 	cursor: pointer;
 	font-family: Arial;
+	height: 32px;
+	position:absolute;
+    top:8;
+    right:55;
+}
+
+#dropButton{
+	position:absolute;
+    top:7;
+    right:120;
 }
 
 .spanDelete{
@@ -94,4 +109,12 @@ body {
 
 .tab_x:hover {
 	background-color: #D0D0C5
+}
+
+.dropdown_button_group {
+	width: 150px;
+	height: 26px;
+	position:relative;
+    top:50%; 
+    left:2%;
 }
