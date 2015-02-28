@@ -118,7 +118,9 @@ function removeTab() {
 function classify(tab) {
 
 	var value = tab.url;
-	
+	if(value.search('chrome://') >= 0){
+		return "Chrome";
+	}
 	if(value.search("www.") >= 0) {
 		value = value.substring(value.search("www.") + 4);
 	}
@@ -171,8 +173,6 @@ function classify(tab) {
 	if(value[value.length-1] == "/"){
 		value = value.substring(0, value.length-1);
 	}
-	if (value == "") { return "New Tab"; }
-	
 	value = value.charAt(0).toUpperCase() + value.slice(1);
 	value = value.trim()
 	return value;
@@ -348,9 +348,9 @@ function updateTabList() {
 
 }
 
-function StorageTest() {
+function Storage() {
 	var array = new Array;
-	var url = "key4";
+	var url = "key12313";
 	chrome.tabs.query({},  function(tabs) {
 		var title = prompt("Please enter the title of this tab set");
 		while (!title && title != null){
@@ -365,6 +365,26 @@ function StorageTest() {
 		array.push(title);
 		chrome.storage.local.get(url, function(result) {
 			try{
+				var good = false;
+				while(!good){
+					var count = 0;
+					for(var i = 0; i < result[url].length; i++){
+						if(result[url][i][result[url][i].length-1].trim() == array[array.length-1].trim() ){
+							var new_title = prompt("Please enter a new title, give one is already taken");
+							if (new_title == null){
+								return;
+							}
+							result[url][i][result[url][i].length-1] = new_title;
+							break;
+						}
+						else{
+							count++;
+						}
+					}
+					if(count == result[url].length){
+						good = true;
+					}
+				}
 				console.log(result);
 				value = result[url];
 				value.push(array);
@@ -378,37 +398,53 @@ function StorageTest() {
 			}
 		});
 	});
-
 }
-
 
 function addToDropdown() {
 	var instance = $('#activeStorage');
-	var url = "key4";
+	var url = "key12313";
 		chrome.storage.local.get(url, function(result) {	
-			for(var i = 0; i < result[url].length; i++){
-				var button = '<li><button class="dropdown_button_group" id="' + result[url][i][result[url][i].length-1] + "___TABZUSE" + '"  >' +  result[url][i][result[url][i].length-1] + ' </button></li>'
-				instance.append(button);
+			try{
+				for(var i = 0; i < result[url].length; i++){
+					var button = '<li><button class="dropdown_button_group" id="' + result[url][i][result[url][i].length-1] + "___TABZUSE" + '"  >' +  result[url][i][result[url][i].length-1] + ' </button></li>'
+					instance.append(button);
+				}
 			}
+			catch(err){}
 	});
 }
-function SayHello(){
-	console.log("Hello");
+function open_storage(name){
+	var url = "key12313";
+		chrome.storage.local.get(url, function(result) {	
+		var strings = [];
+			for(var i = 0; i < result[url].length; i++){
+				if(result[url][i][result[url][i].length-1].trim() == name.trim()){
+					for(var j = 0; j < result[url][i].length - 1; j++){
+						console.log(strings);
+						strings.push(result[url][i][j]);
+					}
+				}
+			}
+			chrome.windows.create({url: strings});
+	});
 }
+
 /* -------------------------------------------------------------------- */
 /*  Main run code for popup */
 
 // global variable containing all the open tabs... eh
-var open_tabs = new Array();
+var open_tabs = [];
 
 $(document).ready(function() {
 	
 	// add event listener to the delete button to call deleteMulti function
 	$('#deleteButton').click(deleteMulti);
-	$('#TestButton').click(StorageTest);
+	$('#TestButton').click(Storage);
 	addToDropdown();
 	$(document).on('click', '.dropdown_button_group', function() {
-		SayHello();
+		var obj_id = this.id;
+		var to_open = $('#'+obj_id).html();
+		open_storage(to_open);
 	});
 	
 	// container to hold all the tabs
@@ -418,4 +454,18 @@ $(document).ready(function() {
 	
 	// update that display bro
 	updateTabList();
+	var url = "key12313";
+		chrome.storage.local.get(url, function(result) {
+			console.log($( window ).height());			
+			if($( window ).height() <= 130){
+				try{
+					var number = $( window ).height() + result[url].length*15;
+					var string  = number.toString();
+					$('body').css({height: string});
+					console.log(string);
+				}
+				catch(err){
+				}
+			}
+	});
 });
