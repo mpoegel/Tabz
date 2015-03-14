@@ -143,6 +143,9 @@ function classify(tab) {
 	else if(value.search(".net") >= 0){
 		value = value.substring(0,value.search(".net"));
 	}
+	else if(value.search(".me") >= 0){
+		value = value.substring(0,value.search(".me"));
+	}
 	else if(value.search(".gov") >= 0){
 		value = value.substring(0,value.search(".gov"));
 	}
@@ -353,11 +356,11 @@ function Storage() {
 	var url = "key12313";
 	chrome.tabs.query({},  function(tabs) {
 		var title = prompt("Please enter the title of this tab set");
-		while (!title && title != null){
-			title = prompt("Please enter the title, none was given");
-		}
-		if(title == null){
+		while (!title || title == ""){
+			if(title == null){
 				return;
+			}
+			title = prompt("Please enter the title, none was given");
 		}
 		for (var i=0; i<tabs.length; i++) {
 			array.push(tabs[i].url);
@@ -366,13 +369,29 @@ function Storage() {
 		chrome.storage.local.get(url, function(result) {
 			try{
 				var good = false;
+				var flag = false;
+				var print = true;
 				while(!good){
 					var count = 0;
 					for(var i = 0; i < result[url].length; i++){
 						if(result[url][i][result[url][i].length-1].trim() == array[array.length-1].trim() ){
-							var new_title = prompt("Please enter a new title, give one is already taken");
+							var new_title = "";
+							if(flag){
+								new_title = prompt("Please enter a new title, a valid one wasn't submitted");
+								flag = false;
+							}
+							else{
+								new_title = prompt("Please enter a new title, given one is already taken");
+								console.log(new_title.length);
+							}	
+							if(new_title.length == 0){
+								flag = true;
+								break;
+							}
 							if (new_title == null){
-								return;
+								print = false;
+								count = result[url].length;
+								break;
 							}
 							result[url][i][result[url][i].length-1] = new_title;
 							break;
@@ -385,16 +404,26 @@ function Storage() {
 						good = true;
 					}
 				}
-				console.log(result);
-				value = result[url];
-				value.push(array);
-				result[url] = value;
-				chrome.storage.local.set( result );
+				if(print){
+					value = result[url];
+					value.push(array);
+					result[url] = value;
+					chrome.storage.local.set( result );
+					$('#TheModal').modal('show');
+				}
 			}
 			catch(err){
-				var obj = {};
-				obj[url] = [array];
-				chrome.storage.local.set( obj );
+				for(var i = 0; i < result[url].length; i++){
+					if(result[url][i][result[url][i].length-1].trim() == array[array.length-1].trim() ){
+						print = false;
+					}	
+				}
+				if(print){
+					var obj = {};
+					obj[url] = [array];
+					chrome.storage.local.set( obj );
+					$('#TheModal').modal('show');	
+				}	
 			}
 		});
 	});
@@ -406,7 +435,7 @@ function addToDropdown() {
 		chrome.storage.local.get(url, function(result) {	
 			try{
 				for(var i = 0; i < result[url].length; i++){
-					var button = '<li><button class="dropdown_button_group" id="' + result[url][i][result[url][i].length-1] + "___TABZUSE" + '"  >' +  result[url][i][result[url][i].length-1] + ' </button></li>'
+					var button = '<li><button class="dropdown_button_group" id="' + result[url][i][result[url][i].length-1].replace(/ /g, "_") + "___TABZUSE" + '"  >' +  result[url][i][result[url][i].length-1] + ' </button></li>'
 					instance.append(button);
 				}
 			}
@@ -415,12 +444,13 @@ function addToDropdown() {
 }
 function open_storage(name){
 	var url = "key12313";
+	var new_name = String(name);
+	new_name = name.substring(0, name.length - 1);
 		chrome.storage.local.get(url, function(result) {	
 		var strings = [];
 			for(var i = 0; i < result[url].length; i++){
-				if(result[url][i][result[url][i].length-1].trim() == name.trim()){
+				if(result[url][i][result[url][i].length-1].trim() == new_name.trim()){
 					for(var j = 0; j < result[url][i].length - 1; j++){
-						console.log(strings);
 						strings.push(result[url][i][j]);
 					}
 				}
@@ -455,14 +485,12 @@ $(document).ready(function() {
 	// update that display bro
 	updateTabList();
 	var url = "key12313";
-		chrome.storage.local.get(url, function(result) {
-			console.log($( window ).height());			
-			if($( window ).height() <= 130){
+		chrome.storage.local.get(url, function(result) {		
+			if($( window ).height() <= (result[url].length*26 + 50)){
 				try{
-					var number = $( window ).height() + result[url].length*15;
+					var number = result[url].length*26 + 45;
 					var string  = number.toString();
 					$('body').css({height: string});
-					console.log(string);
 				}
 				catch(err){
 				}

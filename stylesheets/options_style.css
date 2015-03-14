@@ -4,3 +4,11 @@
 	cursor: pointer;
 	font-family: Arial;
 }
+
+.removal_buttons{
+	background-color: white;
+	border: none;
+}
+
+ul li:before{ content:"-"; position:relative; left:-5px;}
+ul li{ text-indent:-5px; }
