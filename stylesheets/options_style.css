@@ -1,3 +1,6 @@
+body {
+	background-color: #D3D3D3;
+}
 #TestButton{
 	font-size: 16px;
 	float: right;
@@ -5,9 +8,17 @@
 	font-family: Arial;
 }
 
+h1 {
+	text-align: center;
+}
+
 .removal_buttons{
-	background-color: white;
-	border: none;
+	margin:2px;
+
+	border-style: solid;
+    border-color: #000000;
+
+	background-color: #E9E9E9;
 }
 
 ul li:before{ content:"-"; position:relative; left:-5px;}
