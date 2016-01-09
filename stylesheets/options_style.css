@@ -1,24 +1,24 @@
 body {
-	background-color: #D3D3D3;
+    background-color: #D3D3D3;
 }
 #TestButton{
-	font-size: 16px;
-	float: right;
-	cursor: pointer;
-	font-family: Arial;
+    font-size: 16px;
+    float: right;
+    cursor: pointer;
+    font-family: Arial;
 }
 
 h1 {
-	text-align: center;
+    text-align: center;
 }
 
 .removal_buttons{
-	margin:2px;
+    margin:2px;
 
-	border-style: solid;
+    border-style: solid;
     border-color: #000000;
 
-	background-color: #E9E9E9;
+    background-color: #E9E9E9;
 }
 
 ul li:before{ content:"-"; position:relative; left:-5px;}
