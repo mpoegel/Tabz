@@ -1,76 +1,4 @@
-function updateTabList2() {
-    
-    var TABS_NODE = document.getElementById('tab_list');
-    // clear the current list 
-    while (TABS_NODE.hasChildNodes()) {
-        TABS_NODE.removeChild(TABS_NODE.lastChild);
-    }
-
-        for (var i = 0; i < open_tabs.length; i++) {
-            if (open_tabs[i] != null) {
-                var container_div = document.createElement('div');
-                
-                var tab_div = document.createElement('div');
-                tab_div.id = 'tab_' + i;
-                tab_div.className = 'tab_class';
-                tab_div.addEventListener('click', tabSelect);
-                var name = open_tabs[i].title;
-                if(name.length > 50){
-                    name = name.substring(0,50);
-                }
-                var to_add = document.createTextNode(name);
-                tab_div.appendChild(to_add);
-                
-                // classify the current tab by url
-                var section_name = classify(open_tabs[i]);
-                var section_div;
-                
-                // if that classifcation doesn't exist then create it
-                if (document.getElementById(section_name) == null) {
-                    
-                    // create a header node for the div
-                    var section_header = document.createTextNode(section_name);
-                    var header_div = document.createElement('div');
-                    header_div.className = 'group_header';
-                    header_div.id = section_name + '_header';
-                    header_div.appendChild(section_header);
-                    header_div.addEventListener('click', toggle);
-                    TABS_NODE.appendChild(header_div);
-    
-            
-                    // create the section node under the header that will get toggled
-                    section_div = document.createElement('div');
-                    section_div.id = section_name;
-                    section_div.className = 'tab_group';
-                                        
-                    TABS_NODE.appendChild(section_div);
-                    
-                }
-                // if it does then retrieve it
-                else { section_div = document.getElementById(section_name);  }
-                
-                // add the tab to the appropriate section
-                container_div.appendChild(tab_div);
-                
-                // add an X button
-                var del_div = document.createElement('div');
-                del_div.className = 'tab_x';
-                del_div.id = 'tab_x_' + i;
-                del_div.addEventListener('click', removeTab);
-                del_div.appendChild(document.createTextNode('x'));
-                container_div.appendChild(del_div);
-                
-                section_div.appendChild(container_div);
-                
-            }
-        }
-    // does stuff
-    checkStates();
-
-}
-
 function tabSelect() {
-    order(open_tabs);
     var tab_num = this.id.substring(4);
 
     chrome.tabs.query( {}, function(the_tabs) {
@@ -103,15 +31,20 @@ function deleteMulti() {
 
 
 function removeTab() {
-    order(open_tabs);
     var tab_num = this.id.substring(6);
-    var checker = open_tabs[tab_num].id;
-    // close the tab
-    chrome.tabs.remove(open_tabs[tab_num].id);
-    // update the list
-    open_tabs.splice(tab_num, 1);
-    // update the display
-    updateTabList2();
+    chrome.tabs.query( {}, function(tabs){
+        var open_tabs = [];
+        for (var i=0; i<tabs.length; i++) {
+            open_tabs.push(tabs[i]);
+        }
+        order(open_tabs);
+        var checker = open_tabs[tab_num].id;
+        // close the tab
+        chrome.tabs.remove(open_tabs[tab_num].id);
+        closed_tabs.push(open_tabs[tab_num].id);
+        // update the display
+        updateTabList();
+    });
 }
 
 // returns the div class that the url should be placed in
@@ -184,7 +117,6 @@ function classify(tab) {
 
 
 function toggle() {
-    order(open_tabs);
     var k = this.id.search('_header');
     var section = this.id.substring(0,k);
     // toggle the visibility
@@ -212,7 +144,7 @@ function toggle() {
 
 function checkStates() {
     
-    var groups = new Array();
+    var groups = [];
     
     chrome.tabs.query({}, function(tabs) {
         for (var i=0; i<tabs.length; i++) {
@@ -222,81 +154,67 @@ function checkStates() {
             }
         }
                 
-    chrome.storage.local.get(groups, function(result) {
-        for (var k=0; k<groups.length; k++) {
-            var g = groups[k];
-            // create new if not found
-            if (result[g] == null) {
-                var dataObj = {};
-                dataObj[g] = true;
-                chrome.storage.local.set(dataObj);
+        chrome.storage.local.get(groups, function(result) {
+            for (var k=0; k<groups.length; k++) {
+                var g = groups[k];
+                // create new if not found
+                if (result[g] == null) {
+                    var dataObj = {};
+                    dataObj[g] = true;
+                    chrome.storage.local.set(dataObj);
+                }
+                // if its false then make the group hidden
+                else if (result[g] == false) {
+                    document.getElementById(g).classList.toggle('hide_group');
+                }
+                // else true do nothing
             }
-            // if its false then make the group hidden
-            else if (result[g] == false) {
-                document.getElementById(g).classList.toggle('hide_group');
-            }
-            // else true do nothing
-        }
-    });
-            
-        
-        
+        });     
     });
     
 }
 
 /* THIS FUNCTION MUST BE CALLED BEFORE TRYING TO CHANGE ANY TABS  OR ELSE BAD THINGS*/
-function order(tabs){
-
-    for(var i = 0; i < tabs.length; i++){
+function order(tabs_){
+    for(var i = 0; i < tabs_.length; i++){
         for(var j = 0; j < i; j++){
-            if(classify(tabs[i]) < classify(tabs[j])){
-                var tmp = tabs[i];
-                tabs[i] = tabs[j];
-                tabs[j] = tmp;
+            if(classify(tabs_[i]) < classify(tabs_[j])){
+                var tmp = tabs_[i];
+                tabs_[i] = tabs_[j];
+                tabs_[j] = tmp;
             }
         }
     }
+    return tabs_
 }
 
 function updateTabList() {
     /* looks for open tabs and puts tab elements in open tabs array */
-    
-    // reset the open_tabs array
-    open_tabs = new Array();
-    
-    // add all the open tabs to the list
-    // WARNING: ASYNCRONOUS CALL! 
-    chrome.tabs.query( {}, function(tabs){
-        for (var i=0; i<tabs.length; i++) {
-            open_tabs.push(tabs[i]);
-        }
-    });
-    
-    // largest div container for all the tabs
-    // DEPRECIATED
-    var TABS_NODE = document.getElementById('tab_list');
-    
+       
     // clear the current list 
     $('#tab_list').empty();
 
     // build the groups and sort the tabs
     chrome.tabs.query({}, function (tabs) {
-        
-        // alphabetize the tabs (WHY?)
-        order(tabs);
-        
+        var open_tabs = [];
+        for (var i=0; i<tabs.length; i++) {
+            if(closed_tabs.indexOf(tabs[i].id) == -1){
+                open_tabs.push(tabs[i]);
+            }
+        }
+        // alphabetize the tabs
+        open_tabs = order(open_tabs);
         // loop over all the tabs
-        for (var i = 0; i < tabs.length; i++) {
+        for (var i = 0; i < open_tabs.length; i++) {
             
             // double check to make sure the tab is valid
-            if (tabs[i] != null) {
+            if (open_tabs[i] != null) {
                 
                 // create a container div to contain the tab's div
                 var container_div = document.createElement('div');
                 
                 // get the name for the tab
-                var name = tabs[i].title;
+                var name = open_tabs[i].title;
                 if(name.length > 50){
                     name = name.substring(0,50);
                 }
@@ -309,7 +227,7 @@ function updateTabList() {
                 }).appendTo(container_div);
                 
                 // classify the current tab by its URL
-                var section_name = classify(tabs[i]);
+                var section_name = classify(open_tabs[i]);
                 
                 // if that section doesn't exist then create it
                 if (document.getElementById(section_name) == null) {
@@ -345,14 +263,13 @@ function updateTabList() {
         }
     });
     
-    // does stuff
-    // ??
+    // Checks whether tab should be collapsed
     checkStates();
 
 }
 
 function Storage() {
-    var array = new Array;
+    var array = [];
     var url = "key12313";
     chrome.tabs.query({},  function(tabs) {
         var title = prompt("Please enter the title of this tab set");
@@ -445,6 +362,7 @@ function addToDropdown() {
             catch(err){}
     });
 }
+
 function open_storage(name){
     var url = "key12313";
     var new_name = String(name);
@@ -465,8 +383,8 @@ function open_storage(name){
 /* -------------------------------------------------------------------- */
 /*  Main run code for popup */
 
-// global variable containing all the open tabs... eh
-var open_tabs = [];
+// global variable containing all closed Tabs
+closed_tabs = []
 
 $(document).ready(function() {
     
