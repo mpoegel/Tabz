@@ -1,0 +1,6 @@
+#Don't commit bootstrap
+stylesheets/bootstrap.css
+javascript/bootstrap.js
+
+#no jquery also
+jquery-1.11.0.js
