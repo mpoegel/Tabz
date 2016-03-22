@@ -349,13 +349,16 @@ function Storage() {
     });
 }
 
+
+
 function addToDropdown() {
     var instance = $('#activeStorage');
     var url = "key12313";
         chrome.storage.local.get(url, function(result) {    
             try{
                 for(var i = 0; i < result[url].length; i++){
-                    var button = '<li><button class="dropdown_button_group" id="' + result[url][i][result[url][i].length-1].replace(/ /g, "_") + "___TABZUSE" + '"  >' +  result[url][i][result[url][i].length-1] + ' </button></li>'
+                    spaceName = result[url][i][result[url][i].length-1].replace(/ |@|#|\$|\\|\'|\"|,|\.|\//g, "_");
+                    var button = '<li><button class="dropdown_button_group" id="' + spaceName + "___TABZUSE" + '"  >' +  result[url][i][result[url][i].length-1] + ' </button></li>';
                     instance.append(button);
                 }
             }
