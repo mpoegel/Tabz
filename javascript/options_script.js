@@ -11,7 +11,8 @@ function write_storage(removed){
                             }
                         }
                         if(place){
-                            var button = '<li><button class="removal_buttons" id="' + result[url][i][result[url][i].length-1].replace(/ /g, "_") + "___TABZUSE" + '"  >' +  result[url][i][result[url][i].length-1] + ' </button></li>'
+                            var noChars = result[url][i][result[url][i].length-1].replace(/ |@|#|\$|\\|\'|\"|,|\.|\//g, "_");
+                            var button = '<li><button class="removal_buttons" id="'+noChars + "___TABZUSE" + '"  >' +  result[url][i][result[url][i].length-1] + ' </button></li>';
                             instance.append(button);
                         }
                     
@@ -44,11 +45,26 @@ function clear_stored(){
     instance.append(to_add);
 }
 
-
-
  $(document).ready(function() {
     var removed = [];
     write_storage(removed);
+
+    $("#windowOnlyMode").click(function(e) {
+        if(!this.checked) {
+            chrome.storage.local.set({"TABZKEY1": false}, function()  {
+                console.log("Turned Mode to False");
+                $("#windowOnlyMode").prop("checked", false);
+            });
+        }
+        else {
+            chrome.storage.local.set({"TABZKEY1": true}, function()  {
+                console.log("Turned Mode to True");
+                $("#windowOnlyMode").prop("checked", true);
+
+            });
+        }
+    });
+
     $(document).on('click', '.removal_buttons', function() {
         var obj_id = this.id;
         var to_close = $('#'+obj_id).html();

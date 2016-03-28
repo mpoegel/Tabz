@@ -8,7 +8,7 @@ Tabz is a Chrome Extension that changes the way you jump from tab to tab. Do you
 
 ### Version ###
 
-1.2
+2.2
 
 ### Authors ###
 
