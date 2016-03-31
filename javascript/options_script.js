@@ -1,7 +1,7 @@
 function write_storage(removed){
     var instance = $('#Storage_Removal');
     var url = "key12313";
-        chrome.storage.local.get(url, function(result) {    
+        chrome.storage.local.get(url, function(result) {
             try{
                 for(var i = 0; i < result[url].length; i++){
                         place = true;
@@ -15,7 +15,7 @@ function write_storage(removed){
                             var button = '<li><button class="removal_buttons" id="'+noChars + "___TABZUSE" + '"  >' +  result[url][i][result[url][i].length-1] + ' </button></li>';
                             instance.append(button);
                         }
-                    
+
                 }
             }
             catch(err){}
@@ -27,7 +27,7 @@ function remove_storage(name){
     var new_name = String(name);
     var index = -1;
     new_name = name.substring(0, name.length - 1);
-    chrome.storage.local.get(url, function(result) {    
+    chrome.storage.local.get(url, function(result) {
         for(var i = 0; i < result[url].length; i++){
             if(result[url][i][result[url][i].length-1].trim() == new_name.trim()){
                 index = i;
@@ -35,7 +35,7 @@ function remove_storage(name){
         }
         result[url].splice(index, 1);
         chrome.storage.local.set( result );
-        }); 
+        });
 }
 
 function clear_stored(){
@@ -48,17 +48,20 @@ function clear_stored(){
  $(document).ready(function() {
     var removed = [];
     write_storage(removed);
+    chrome.storage.local.get("TABZKEY1", function(result)  {
+        if(result["TABZKEY1"]){
+            $("#windowOnlyMode").prop("checked", true);
+        }
+    });
 
     $("#windowOnlyMode").click(function(e) {
         if(!this.checked) {
             chrome.storage.local.set({"TABZKEY1": false}, function()  {
-                console.log("Turned Mode to False");
                 $("#windowOnlyMode").prop("checked", false);
             });
         }
         else {
             chrome.storage.local.set({"TABZKEY1": true}, function()  {
-                console.log("Turned Mode to True");
                 $("#windowOnlyMode").prop("checked", true);
 
             });
