@@ -340,7 +340,10 @@ function Storage() {
                     value = result[url];
                     value.push(array);
                     result[url] = value;
-                    chrome.storage.local.set( result );
+                    chrome.storage.local.set( result, function(){
+                      var instance = $('#activeStorage');
+                      appendButton(instance, new_title);
+                    });
                     $('#TheModal').modal('show');
                 }
             }
@@ -356,13 +359,23 @@ function Storage() {
                 if(print){
                     var obj = {};
                     obj[url] = [array];
-                    chrome.storage.local.set( obj );
+                    chrome.storage.local.set( obj, function(result) {
+                      console.log(result);
+                      var instance = $('#activeStorage');
+                      appendButton(instance, new_title);
+                    } );
                     $('#TheModal').modal('show');
                 }
             }
         });
     });
   });
+}
+
+function appendButton(instance, name) {
+  var spaceName = name.replace(/ |@|#|\$|\\|\'|\"|,|\.|\//g, "_");
+  var button = '<li><button class="dropdown_button_group" id="' + spaceName + "___TABZUSE" + '"  >' +  name + ' </button></li>';
+  instance.append(button);
 }
 
 
@@ -372,9 +385,7 @@ function addToDropdown() {
         chrome.storage.local.get(url, function(result) {
             try{
                 for(var i = 0; i < result[url].length; i++){
-                    spaceName = result[url][i][result[url][i].length-1].replace(/ |@|#|\$|\\|\'|\"|,|\.|\//g, "_");
-                    var button = '<li><button class="dropdown_button_group" id="' + spaceName + "___TABZUSE" + '"  >' +  result[url][i][result[url][i].length-1] + ' </button></li>';
-                    instance.append(button);
+                    appendButton(instance, result[url][i][result[url][i].length-1])
                 }
             }
             catch(err){}
